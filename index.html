@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI in Seattle — Course Microsite</title>
+<style>
+  :root {
+    --mag: #e0006d; --mag-l: #fce8f3; --mag-m: #c0005c;
+    --nav-h: 52px;
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f5f4f0;
+    --color-text-primary: #1a1a18;
+    --color-text-secondary: #5f5e5a;
+    --color-text-tertiary: #9c9a92;
+    --color-border-tertiary: rgba(0,0,0,0.12);
+    --color-border-secondary: rgba(0,0,0,0.22);
+    --color-background-info: #e6f1fb;
+    --color-text-info: #185fa5;
+    --color-background-success: #eaf3de;
+    --color-text-success: #3b6d11;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background-primary: #1a1a18;
+      --color-background-secondary: #242422;
+      --color-text-primary: #e8e6de;
+      --color-text-secondary: #9c9a92;
+      --color-text-tertiary: #6b6a64;
+      --color-border-tertiary: rgba(255,255,255,0.1);
+      --color-border-secondary: rgba(255,255,255,0.2);
+      --color-background-info: #042c53;
+      --color-text-info: #85b7eb;
+      --color-background-success: #173404;
+      --color-text-success: #97c459;
+    }
+    .pill { background: #4b1528 !important; color: #ed93b1 !important; }
+    .a1 { background: #042c53 !important; border-color: #0c447c !important; }
+    .a1 .al { color: #85b7eb !important; }
+    .a2 { background: #173404 !important; border-color: #27500a !important; }
+    .a2 .al { color: #97c459 !important; }
+    .a3 { background: #412402 !important; border-color: #633806 !important; }
+    .a3 .al { color: #ef9f27 !important; }
+    .a4 { background: #4b1528 !important; border-color: #72243e !important; }
+    .a4 .al { color: #ed93b1 !important; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); color: var(--color-text-primary); background: var(--color-background-primary); font-size: 16px; line-height: 1.5; }
+  #nav { position: sticky; top: 0; z-index: 100; background: var(--color-background-primary); border-bottom: 0.5px solid var(--color-border-tertiary); display: flex; align-items: center; gap: 4px; padding: 0 16px; height: var(--nav-h); overflow-x: auto; }
+  .nb { flex-shrink: 0; padding: 6px 14px; border-radius: 20px; border: 0.5px solid var(--color-border-tertiary); background: transparent; cursor: pointer; font-size: 13px; color: var(--color-text-secondary); transition: all .15s; white-space: nowrap; font-family: var(--font-sans); }
+  .nb:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+  .nb.active { background: var(--mag); color: #fff; border-color: var(--mag); }
+  .sec { display: none; padding: 28px 20px 48px; max-width: 720px; margin: 0 auto; }
+  .sec.v { display: block; }
+  .hero { text-align: center; padding: 32px 20px 28px; }
+  .pill { display: inline-block; background: var(--mag-l); color: var(--mag-m); font-size: 11px; font-weight: 500; letter-spacing: .06em; padding: 4px 12px; border-radius: 12px; margin-bottom: 14px; text-transform: uppercase; }
+  .hero h1 { font-size: 26px; font-weight: 500; line-height: 1.25; margin-bottom: 10px; }
+  .hero p { font-size: 14px; color: var(--color-text-secondary); max-width: 480px; margin: 0 auto 16px; line-height: 1.6; }
+  .hstats { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-top: 16px; }
+  .hs { text-align: center; }
+  .hs-n { font-size: 22px; font-weight: 500; color: var(--mag); }
+  .hs-l { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+  .div { height: 0.5px; background: var(--color-border-tertiary); margin: 22px 0; }
+  h2 { font-size: 18px; font-weight: 500; margin-bottom: 14px; }
+  h3 { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 15px 17px; margin-bottom: 12px; cursor: pointer; transition: border-color .15s; }
+  .card:hover { border-color: var(--mag); }
+  .cr { display: flex; gap: 12px; align-items: flex-start; }
+  .ci { flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+  .cb p { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; line-height: 1.5; }
+  .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 8px; margin-top: 7px; font-weight: 500; margin-right: 4px; }
+  .tb { background: var(--color-background-info); color: var(--color-text-info); }
+  .tg { background: var(--color-background-success); color: var(--color-text-success); }
+  .ta { background: #faeeda; color: #854f0b; }
+  .tp { background: var(--mag-l); color: var(--mag-m); }
+  .tgr { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  .fg { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-bottom: 18px; }
+  .fw { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 13px 15px; border: 0.5px solid var(--color-border-tertiary); }
+  .fw h3 { font-size: 14px; margin-bottom: 5px; }
+  .fw p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+  .fwn { font-size: 22px; font-weight: 500; color: var(--mag); margin-bottom: 3px; }
+  .ag { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+  .ac { border-radius: var(--border-radius-lg); padding: 13px 15px; border: 0.5px solid var(--color-border-tertiary); }
+  .al { font-size: 26px; font-weight: 500; line-height: 1; margin-bottom: 5px; }
+  .ac h3 { font-size: 14px; margin-bottom: 3px; }
+  .ac p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+  .a1 { background: #e6f1fb; border-color: #b5d4f4; } .a1 .al { color: #185fa5; }
+  .a2 { background: #eaf3de; border-color: #c0dd97; } .a2 .al { color: #3b6d11; }
+  .a3 { background: #faeeda; border-color: #fac775; } .a3 .al { color: #854f0b; }
+  .a4 { background: var(--mag-l); border-color: #f4c0d1; } .a4 .al { color: var(--mag-m); }
+  .cc { display: flex; gap: 13px; align-items: flex-start; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 15px 17px; margin-bottom: 11px; cursor: pointer; transition: border-color .15s; }
+  .cc:hover { border-color: var(--mag); }
+  .clog { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  .cbod { flex: 1; }
+  .cbod h3 { font-size: 15px; font-weight: 500; }
+  .tline { font-size: 12px; color: var(--mag-m); margin: 2px 0 5px; font-weight: 500; }
+  .cbod p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .ctags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 7px; }
+  .ti { display: flex; gap: 13px; padding: 13px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .ti:last-child { border-bottom: none; }
+  .tn { flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px; background: var(--mag); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; }
+  .tb2 { flex: 1; }
+  .tb2 h3 { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .tb2 p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .ai { display: flex; gap: 13px; padding: 15px 0; border-bottom: 0.5px solid var(--color-border-tertiary); cursor: pointer; }
+  .ai:last-child { border-bottom: none; }
+  .ai:hover .aar { color: var(--mag); }
+  .ach { flex-shrink: 0; width: 21px; height: 21px; border-radius: 6px; border: 0.5px solid var(--color-border-secondary); background: var(--color-background-secondary); display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: background .15s; }
+  .ach.done { background: var(--mag); border-color: var(--mag); }
+  .ach.done svg { display: block; }
+  .ach svg { display: none; }
+  .aib { flex: 1; }
+  .aib h3 { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .aib p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .aar { color: var(--color-text-tertiary); font-size: 14px; margin-top: 2px; transition: color .15s; }
+  .acat { font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 18px 0 7px; }
+  .qb { border-left: 3px solid var(--mag); padding: 11px 15px; margin: 14px 0; background: var(--color-background-secondary); border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; }
+  .qb p { font-size: 14px; line-height: 1.6; font-style: italic; }
+  .qb span { font-size: 12px; color: var(--color-text-secondary); margin-top: 5px; display: block; }
+  .xbtn { font-size: 12px; color: var(--mag); background: none; border: none; cursor: pointer; padding: 4px 0; display: block; margin-top: 5px; font-family: var(--font-sans); }
+  .xd { display: none; }
+  .xd.o { display: block; }
+  .mr { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-bottom: 18px; }
+  .mt { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 11px 13px; }
+  .mn { font-size: 19px; font-weight: 500; color: var(--mag); }
+  .ml { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+  .spk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .spk { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 13px 15px; border: 0.5px solid var(--color-border-tertiary); }
+  .spk-name { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+  .spk-role { font-size: 11px; color: var(--mag-m); margin-bottom: 6px; font-weight: 500; }
+  .spk p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+  .stat-row { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; align-items: baseline; margin: 10px 0; }
+  .stat-n { font-size: 20px; font-weight: 500; color: var(--mag); white-space: nowrap; }
+  .stat-l { font-size: 13px; color: var(--color-text-secondary); line-height: 1.4; }
+  .slide-badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 6px; background: #faeeda; color: #854f0b; margin-left: 6px; vertical-align: middle; }
+  @media (max-width: 480px) {
+    .fg, .ag, .spk-grid { grid-template-columns: 1fr; }
+    .mr { grid-template-columns: repeat(2, 1fr); }
+    .hstats { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="nav">
+  <button class="nb active" onclick="show('overview')">Overview</button>
+  <button class="nb" onclick="show('frameworks')">Frameworks</button>
+  <button class="nb" onclick="show('visits')">Company visits</button>
+  <button class="nb" onclick="show('speakers')">Speakers</button>
+  <button class="nb" onclick="show('themes')">Themes</button>
+  <button class="nb" onclick="show('actions')">Monday morning</button>
+</div>
+
+<!-- OVERVIEW -->
+<div id="s-overview" class="sec v">
+  <div class="hero">
+    <div class="pill">Wharton · AI in Seattle · March 8–12, 2026</div>
+    <h1>AI-enabled business models<br>in the real world</h1>
+    <p>Five days of executive education taught by Prof. Serguei Netessine, anchored in Seattle with site visits to T-Mobile, Amazon, and Microsoft — plus speakers from Gates Foundation, Madrona, Blue Origin, and more.</p>
+    <div class="hstats">
+      <div class="hs"><div class="hs-n">4</div><div class="hs-l">Course sessions</div></div>
+      <div class="hs"><div class="hs-n">3</div><div class="hs-l">Company visits</div></div>
+      <div class="hs"><div class="hs-n">6+</div><div class="hs-l">Guest speakers</div></div>
+      <div class="hs"><div class="hs-n">4A</div><div class="hs-l">Governance framework</div></div>
+      <div class="hs"><div class="hs-n">7</div><div class="hs-l">Cross-cutting themes</div></div>
+    </div>
+  </div>
+  <div class="div"></div>
+  <h2>The week at a glance</h2>
+  <div class="card" onclick="show('frameworks')">
+    <div class="cr"><div class="ci" style="background:#e6f1fb">📐</div><div class="cb"><h3>Sessions 1–4 — Strategy, process & culture</h3><p>Business Model Canvas as the organizing lens. The 4A Governance Framework. AI economics vs. SaaS. Why culture — not technology — is the binding constraint on AI adoption.</p><span class="tag tb">Frameworks</span></div></div>
+  </div>
+  <div class="card" onclick="show('visits')">
+    <div class="cr"><div class="ci" style="background:#faeeda">🏢</div><div class="cb"><h3>T-Mobile · Amazon · Microsoft — site visits</h3><p>Live deployments, precise slide metrics, and what each company got wrong first. Real data from the actual T-Mobile presentation deck, Amazon's AI Native program, and Microsoft's token factory pivot.</p><span class="tag ta">Field visits</span></div></div>
+  </div>
+  <div class="card" onclick="show('speakers')">
+    <div class="cr"><div class="ci" style="background:#fce8f3">🎤</div><div class="cb"><h3>Guest speakers — Gates, Madrona, Blue Origin, Korst</h3><p>The Gates Foundation on 'pilotitis.' Madrona on where value is accruing. Blue Origin on 7B tokens/day. Jeremy Korst on the 70% iceberg and the VP-to-manager perception gap.</p><span class="tag tp">Speakers</span></div></div>
+  </div>
+  <div class="card" onclick="show('themes')">
+    <div class="cr"><div class="ci" style="background:#eaf3de">🔗</div><div class="cb"><h3>7 cross-cutting themes</h3><p>What every company and speaker agreed on — from algorithmic aversion to the golden toilet award.</p><span class="tag tg">Synthesis</span></div></div>
+  </div>
+  <div class="div"></div>
+  <div class="qb"><p>"My dear, here we must run as fast as we can, just to stay in place. And if you wish to go anywhere you must run twice as fast as that."</p><span>— Lewis Carroll · Course epigraph</span></div>
+  <div class="qb"><p>"AI isn't a strategy. It's how you accelerate yours."</p><span>— Jeremy Korst, Founder, Mindspan Labs · Day 2 speaker</span></div>
+</div>
+
+<!-- FRAMEWORKS -->
+<div id="s-frameworks" class="sec">
+  <h2>Core frameworks</h2>
+  <div class="fg">
+    <div class="fw"><div class="fwn">BMC</div><h3>Business model canvas</h3><p>Map the model first. Audit each block for decision inefficiencies. Then ask where AI reduces or eliminates them. The AI cart goes after the business model horse.</p></div>
+    <div class="fw"><div class="fwn">4A</div><h3>Governance framework</h3><p>Automate · Approve · Audit · Assist. Where you stop is determined by risk level and reversibility. Governance is a living system — Approve migrates to Automate as trust builds.</p></div>
+    <div class="fw"><div class="fwn">WINS</div><h3>WINS framework</h3><p>Generative AI operates with Words, Images, Numbers, Sounds. Assess your business model by what % operates in WINS and how digitized it already is. High-WINS sectors face the most disruption and opportunity.</p></div>
+    <div class="fw"><div class="fwn">70%</div><h3>The iceberg (Korst)</h3><p>Most organizations focus on the visible 30% — tech, platforms, data. The hidden 70% that actually drives success: strategic clarity, people & skills, org processes, culture & mindset.</p></div>
+  </div>
+  <div class="div"></div>
+  <h2>The 4A governance framework</h2>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;line-height:1.6">Two questions determine which A to choose: (1) If this goes wrong, who gets hurt and how badly? (2) Can we undo it quickly? Stop earlier when risk is high or reversibility is low. Perception of risk changes over time — Approve can migrate to Automate as trust builds.</p>
+  <div class="ag">
+    <div class="ac a1"><div class="al">A</div><h3>Automate</h3><p>Fully autonomous with real-time monitoring + guardrails. Low-risk, high-frequency, standardized tasks. T-Mobile: >100M automated network optimization changes/year.</p></div>
+    <div class="ac a2"><div class="al">A</div><h3>Approve</h3><p>AI acts; human reviews before execution. High-risk but reviewable. T-Mobile: customer offer drafting — AI generates, human approves before sending.</p></div>
+    <div class="ac a3"><div class="al">A</div><h3>Audit</h3><p>AI acts autonomously; human reviews a sample after. Medium-risk, high-volume tasks where pre-approval isn't feasible at scale.</p></div>
+    <div class="ac a4"><div class="al">A</div><h3>Assist</h3><p>AI suggests or drafts; human makes the final decision. High-stakes, novel, or irreversible decisions. Most knowledge work starts here.</p></div>
+  </div>
+  <div class="qb"><p>"Stop earlier when the decision risk is high or reversibility is low. Stop later when errors are cheap and decisions are reversible."</p><span>— Session 3, Prof. Netessine</span></div>
+  <div class="div"></div>
+  <h2>AI process transformation engine</h2>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;line-height:1.6">The biggest mistake: automating tasks without redesigning the underlying decision logic. If a human is needed to hand things from A to B, that's a process defect. Three common failure modes: automating tasks not decisions, ignoring the unhappy path, and ignoring end-to-end flow.</p>
+  <div class="ti"><div class="tn">1</div><div class="tb2"><h3>Pick the decision + define primary KPI</h3><p>What specific decision is being made? What one metric proves this is working?</p></div></div>
+  <div class="ti"><div class="tn">2</div><div class="tb2"><h3>Redesign workflow — map happy and unhappy paths</h3><p>Completely rethink the process to get full utility from AI. Don't just speed up the existing steps.</p></div></div>
+  <div class="ti"><div class="tn">3</div><div class="tb2"><h3>Set governance — choose the right 'A'</h3><p>Assign Assist / Approve / Audit / Automate based on risk and reversibility. Draw the stop line before you build.</p></div></div>
+  <div class="ti"><div class="tn">4</div><div class="tb2"><h3>Measure with 1 KPI + 2–3 guardrails</h3><p>Avoid Goodhart's Law. "Hours saved only matters when applied to the bottleneck." Measure flow, quality, and economics — not activity.</p></div></div>
+  <div class="ti"><div class="tn">5</div><div class="tb2"><h3>Scale patterns</h3><p>Recommend → Approve → Execute. Ship a playbook with policy, thresholds, logs, and training. Repeatable patterns beat one-off wins.</p></div></div>
+  <div class="div"></div>
+  <h2>AI economics ≠ SaaS</h2>
+  <div class="mr">
+    <div class="mt"><div class="mn">50–60%</div><div class="ml">Target gross margins (vs ~80–90% SaaS)</div></div>
+    <div class="mt"><div class="mn">COGS</div><div class="ml">Back — every query incurs real GPU + inference cost</div></div>
+    <div class="mt"><div class="mn">3 types</div><div class="ml">Copilots · Agents · AI Services</div></div>
+  </div>
+  <div class="fw" style="margin-bottom:12px"><h3>Three AI business model archetypes</h3><p style="margin-top:6px">Copilots (per-seat, commoditizing margins) → Agents (outcome/ROI-tied, higher margins) → AI Services (outcome vs. FTE cost, highest margins, replaces labor). "Soft ROI kills renewals." SLMs often run on CPUs and dramatically reduce inference cost. Charge metric is a strategic statement — not just a billing decision.</p></div>
+</div>
+
+<!-- COMPANY VISITS -->
+<div id="s-visits" class="sec">
+  <h2>Company visits</h2>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:18px;line-height:1.6">Three days of site visits. The T-Mobile section below draws directly from their confidential presentation slides shown during the visit.</p>
+
+  <div class="cc" onclick="x('tm')">
+    <div class="clog" style="background:#e0006d;color:#fff">T‑Mo</div>
+    <div class="cbod">
+      <h3>T-Mobile · Day 2 <span class="slide-badge">slide data</span></h3>
+      <div class="tline">Jeff Simon, CIO — AI vision across four pillars</div>
+      <p>Revolutionize CX · Transform Operations · Elevate Network · Innovate New Products. AI spend ~5% of IT budget. 31,000 GPT licenses deployed. 80% of transactions via T-Life app. 25M monthly active users. Most telcos at 20–30% digital transactions vs. T-Mobile's 80%.</p>
+      <div class="ctags"><span class="tag tp">$3B EBITDA target by 2027</span><span class="tag tb">AI-RAN + IntentCX</span><span class="tag tgr">~5% of IT budget</span></div>
+      <button class="xbtn">Expand all four pillars ▾</button>
+      <div class="xd" id="tm">
+        <div class="div" style="margin:12px 0 10px"></div>
+        <h3 style="font-size:13px;color:#c0005c;margin-bottom:10px">A · Personalized, Always-On Service (IntentCX)</h3>
+        <div class="stat-row"><div class="stat-n">30%</div><div class="stat-l">of live-agent chat volume offloaded across ~15M interactions</div></div>
+        <div class="stat-row"><div class="stat-n">23%</div><div class="stat-l">messaging volume reduction vs. pre-launch; 55% 2-day containment</div></div>
+        <div class="stat-row"><div class="stat-n">90%</div><div class="stat-l">reduction in chat service costs vs. live-agent</div></div>
+        <div class="stat-row"><div class="stat-n">NPS 10</div><div class="stat-l">for AI agent today (vs. 30 for human agent) — gap actively closing</div></div>
+        <p style="font-size:12px;color:var(--color-text-secondary);margin-top:8px;line-height:1.5">Roadmap: expand to handle 15% of voice calls by 1H 2026 → 30% → 40% by 2H 2026+. Launch Next Best Experience (NBX) for proactive personalized recommendations.</p>
+        <div class="div" style="margin:12px 0 10px"></div>
+        <h3 style="font-size:13px;color:#c0005c;margin-bottom:10px">B · Hassle-Free Purchase (JourneyBot + Easy Switch)</h3>
+        <div class="stat-row"><div class="stat-n">2×</div><div class="stat-l">upgrade conversion observed with JourneyBot</div></div>
+        <div class="stat-row"><div class="stat-n">15 min</div><div class="stat-l">target switching time with Easy Switch AI guided digital flow</div></div>
+        <div class="stat-row"><div class="stat-n">11%→50%</div><div class="stat-l">unassisted digital activation target: from 2025 to 2027</div></div>
+        <p style="font-size:12px;color:var(--color-text-secondary);margin-top:8px;line-height:1.5">Roadmap: multi-language JourneyBot, Easy Switch for Rebates (1H 2026).</p>
+        <div class="div" style="margin:12px 0 10px"></div>
+        <h3 style="font-size:13px;color:#c0005c;margin-bottom:10px">C · AI-Enabled Frontline (Expert Head Start)</h3>
+        <div class="stat-row"><div class="stat-n">+6 pts</div><div class="stat-l">NPS improvement: 60 → 66 when using EHS capabilities</div></div>
+        <div class="stat-row"><div class="stat-n">90%+</div><div class="stat-l">of calls get a personalized EHS from 600 unique Head Starts</div></div>
+        <div class="stat-row"><div class="stat-n">3M</div><div class="stat-l">call reduction from EHS + Next Best Action + Expert Recap</div></div>
+        <div class="stat-row"><div class="stat-n">80%</div><div class="stat-l">of eligible calls include highly contextual billing, device and network details</div></div>
+        <p style="font-size:12px;color:var(--color-text-secondary);margin-top:8px;line-height:1.5">Roadmap: remove additional 5M calls in 2026; expand into Retail & Virtual Retail.</p>
+        <div class="div" style="margin:12px 0 10px"></div>
+        <h3 style="font-size:13px;color:#c0005c;margin-bottom:10px">E · Customer-Centric Network Planning (CDC Model)</h3>
+        <div class="stat-row"><div class="stat-n">–15 bps</div><div class="stat-l">churn reduction in network upgraded areas</div></div>
+        <div class="stat-row"><div class="stat-n">~80%</div><div class="stat-l">of new site submissions driven by CDC model</div></div>
+        <div class="stat-row"><div class="stat-n">$750M</div><div class="stat-l">increased CLV unlocked from 2025 YTD network build</div></div>
+        <div class="stat-row"><div class="stat-n">1K+</div><div class="stat-l">sites identified for RF decommissioning due to coverage overlap</div></div>
+        <p style="font-size:12px;color:var(--color-text-secondary);margin-top:8px;line-height:1.5">U.S. divided into small hexbins capturing customer movement. AI/ML model forms predictive outcomes based on customer experience — replacing legacy population-density models.</p>
+        <div class="div" style="margin:12px 0 10px"></div>
+        <h3 style="font-size:13px;color:#c0005c;margin-bottom:10px">F · Automated Network Optimization</h3>
+        <div class="stat-row"><div class="stat-n">>100M</div><div class="stat-l">automated optimization changes: signal quality, feature config, traffic spikes</div></div>
+        <div class="stat-row"><div class="stat-n">4M</div><div class="stat-l">zero-touch outage mitigations (170K+ during Beryl/Helene/Milton, 12K+ CA wildfires)</div></div>
+        <div class="stat-row"><div class="stat-n">70%</div><div class="stat-l">of network care calls traced to root cause, deflecting 500K care calls</div></div>
+        <div class="stat-row"><div class="stat-n">99.98%</div><div class="stat-l">network provisioning success; 5G upgrades completed 50% faster</div></div>
+        <div class="div" style="margin:12px 0 10px"></div>
+        <h3 style="font-size:13px;color:#c0005c;margin-bottom:10px">H · Network-Native Voice AI</h3>
+        <p style="font-size:12px;color:var(--color-text-secondary);line-height:1.5">Unified AI platform built directly into the network — no app or hardware upgrade required. Works on any device. Roadmap 2026+: Live Translation (real-time bidirectional), SMB AI Receptionist, context-aware AI Assistant, new B2B monetization via ARPA expansion.</p>
+        <div class="div" style="margin:12px 0 10px"></div>
+        <h3 style="font-size:13px;color:#c0005c;margin-bottom:10px">AI governance</h3>
+        <p style="font-size:12px;color:var(--color-text-secondary);line-height:1.5">Five pillars: Governance (exec oversight), Assessments & Controls, Data Integrity, AI Policy & Standards (consumer-facing + agentic undergo rigorous validation; internal tools lighter controls), Strategy & Enablement (AI Hub, trainings, sandboxes). Agentic guardrails: agents access only certain elements; all account changes processed through deterministic transaction systems.</p>
+        <div class="div" style="margin:12px 0 10px"></div>
+        <div class="qb"><p>"AI isn't a cost tool for us — it will completely change the customer experience."</p><span>— Jeff Simon, CIO, T-Mobile</span></div>
+        <div class="qb"><p>"Don't put AI behind something that's not AI. AI should answer the phone as the first contact." — learned the hard way.</p><span>— T-Mobile VP, CX</span></div>
+        <div class="qb"><p>"We compare this to our early 5G bet — we'd invest even if ROI is unclear today."</p><span>— T-Mobile Leadership</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc" onclick="x('amz')">
+    <div class="clog" style="background:#ba7517;color:#fff">AMZ</div>
+    <div class="cbod">
+      <h3>Amazon · Days 3–4</h3>
+      <div class="tline">Cami Novelli-Killeen, Dir. PM Applied AI · Melissa Cha, Amazon Devices & Services</div>
+      <p>Two distinct sessions. AI Native: teams given explicit permission to push the boundaries of how Amazon works. ~18 months in; 4.5× productivity in first months, goal is 10×. AI Native pilot teams meet monthly with senior leadership. Biggest challenge: people don't like change or giving up control.</p>
+      <div class="ctags"><span class="tag ta">4.5× → 10× productivity goal</span><span class="tag tgr">20+ miles conveyor belts</span><span class="tag tg">Cost-per-unit = key metric</span></div>
+      <button class="xbtn">Key insights ▾</button>
+      <div class="xd" id="amz">
+        <div class="ti" style="padding:8px 0"><div class="tb2"><h3>Measure team productivity, not individual</h3><p>Teams are systems: people + tools + AI setup. No one delivers alone. Metric: shipment deployments per week.</p></div></div>
+        <div class="ti" style="padding:8px 0"><div class="tb2"><h3>97% AI-written code ≠ lower standards</h3><p>Same rigor — or more. "How late in the process can you ask a human to come in?" is the new design question.</p></div></div>
+        <div class="ti" style="padding:8px 0"><div class="tb2"><h3>"How can I get to yes?"</h3><p>Both T-Mobile and Amazon independently used this as their north star. Every AI investment filtered through: does this make the customer's life better?</p></div></div>
+        <div class="ti" style="padding:8px 0"><div class="tb2"><h3>The golden toilet award 🏆</h3><p>Amazon gives a "golden toilet" award to the team that runs the most (and worst) experiments. Reward experimentation, not outcomes — because outcomes are rare.</p></div></div>
+        <div class="ti" style="padding:8px 0"><div class="tb2"><h3>Warehouse visit: cost per unit as north star</h3><p>Over 20 miles of conveyor belts. 15–25% volume increase during Prime Day. Cost per unit drives all process changes and investments. Average tenure ~4 years in PNW, ~6 years in Kentucky. Career Choice pays up to 100%+ for career advancement.</p></div></div>
+        <div class="ti" style="padding:8px 0"><div class="tb2"><h3>Amazon Devices (Melissa Cha)</h3><p>Andy Jassy was Bezos's shadow (technical advisor). Lab 126 = first and last letter of the alphabet. Kindle's codename: Fiona. PRFAQ: press release first, then FAQ. Jeff Wilke: "Good documents have the clarity of angels singing." War-time vs. peace-time generals: a company needs different leaders for different times.</p></div></div>
+        <div class="ti" style="padding:8px 0"><div class="tb2"><h3>SLT learnings on AI</h3><p>"Can't treat AI as a tool, it's a skillset — think of AI as a new teammate you need to onboard: org context, team missions, tools to access." Amazon typically runs experiments for 5–7 years. Book: "Working Backwards."</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc" onclick="x('msft')">
+    <div class="clog" style="background:#185fa5;color:#fff">MSFT</div>
+    <div class="cbod">
+      <h3>Microsoft · Day 4</h3>
+      <div class="tline">John Minter (President, BD & Partnerships) · Brian Hillger (Azure VP) · Ranveer Chandra (M365 Copilot)</div>
+      <p>Three distinct perspectives. John Minter: 95% of personal time on AI. "3 people wrote 75% of Word in 60 hours — 18M lines of code." Most productive developers on a run rate to consume $1M of compute/year at cost. Tools are now 4× the cost of the developer.</p>
+      <div class="ctags"><span class="tag tb">Azure $75B revenue, +34%</span><span class="tag tgr">Licenses + tokens model</span><span class="tag tp">Microsoft Foundry platform</span></div>
+      <button class="xbtn">Expand all three speakers ▾</button>
+      <div class="xd" id="msft">
+        <div class="ti" style="padding:8px 0"><div class="tb2"><h3>John Minter — AI and the meaning of scarcity</h3><p>95% of personal time on AI. "What does AI mean in terms of scarcity?" Requires fundamental change in how people think about companies: developer of apps, provider of underlying tech, or company that needs to reinvent itself. "3 people wrote 75% of Word in 60 hours — 18M lines of code." Most productive developers at Microsoft on a run rate to consume $1M of compute/year at cost. Tools are now 4× the cost of the developer. "If you're starting a business now, how you think about your cost basis is fundamentally different." CPT = Customer Promise Time.</p></div></div>
+        <div class="ti" style="padding:8px 0"><div class="tb2"><h3>Brian Hillger — Azure is a token factory</h3><p>Microsoft's model: people → tokens. Since ChatGPT, every single forecast of token demand has been wrong — and all too low. When Microsoft gave OpenAI $10B in 2022, they thought it was all the capital needed until 2030 — could be a factor of 100 off. They may have more construction workers building data centers than any other company. "There needs to be a fundamental reinvention of energy for data centers — tokens per dollar per watt." Products are multi-model by design — a bet the model race continues. One tactic to drive down cost per token: use small language models. Azure's original code name was RedDog.</p></div></div>
+        <div class="ti" style="padding:8px 0"><div class="tb2"><h3>Ranveer Chandra — building the enterprise brain</h3><p>Mission: enable every enterprise to build a personalized "Brain" — "talks like you, thinks like you, works like you." Copilot Tuning: bringing corporate intelligence into AI tools. Three phases: Copilot capabilities today (Chat, Search, Agents, Notebooks, Create) → digital colleagues → agents run entire processes with humans supervising. Agri-food: small model on drones + big model in cloud. "With AI, you can become a frontier firm." Specific models much better than general ones. A bad sample is worse than no sample at all.</p></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SPEAKERS -->
+<div id="s-speakers" class="sec">
+  <h2>Guest speakers</h2>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:18px;line-height:1.6">Beyond the site visits, the week included speakers offering distinct lenses on AI strategy, investment, and adoption.</p>
+  <div class="spk-grid">
+    <div class="spk"><div class="spk-name">Jeremy Korst</div><div class="spk-role">Founder & CEO, Mindspan Labs · Day 2</div><p>The 70% iceberg. VPs perceive AI adoption 2× faster than middle managers. Amara's Law. Smaller companies can move faster and bring AI more deeply into the value chain.</p></div>
+    <div class="spk"><div class="spk-name">Gates Foundation</div><div class="spk-role">AI for global health · Day 2</div><p>Malaria detection, preeclampsia ID, sustainable development. 'Pilotitis': too many experiments, no path to scale. Competitive advantage is being catalytic. Still figuring out internal AI use.</p></div>
+    <div class="spk"><div class="spk-name">Madrona — Scott (MD) + Rasik (Investor)</div><div class="spk-role">Seattle venture capital · Day 3</div><p>Value currently accruing to the model layer, not infrastructure or app layer — but this will shift. 40% of their investments are 0–1 in terms of getting capital back. "Reasoning flywheel." Legwork of VC (market sizing, sourcing) being outsourced to models.</p></div>
+    <div class="spk"><div class="spk-name">Blue Origin — Josh</div><div class="spk-role">Aerospace AI · Day 5 (3/12)</div><p>7 billion tokens/day. 9.5K monthly avg. users across ~13K employees. Projecting 3× AI budget. OP-1 = annual planning (6-page doc). R&O = Risks and Opportunities. "Constraint breeds innovation." #2 hackathon idea: AI coder to find Jira tickets it could implement on its own.</p></div>
+  </div>
+  <div class="div"></div>
+  <h2>The Jeremy Korst data</h2>
+  <div class="mr">
+    <div class="mt"><div class="mn">82%</div><div class="ml">Enterprise leaders use AI weekly (+10% YoY)</div></div>
+    <div class="mt"><div class="mn">74%</div><div class="ml">Report positive early ROI</div></div>
+    <div class="mt"><div class="mn">2×</div><div class="ml">VPs vs. mid-managers on perceived adoption speed</div></div>
+  </div>
+  <div class="mr">
+    <div class="mt"><div class="mn">81%</div><div class="ml">VPs: moderately/significantly positive ROI</div></div>
+    <div class="mt"><div class="mn">69%</div><div class="ml">Mid-managers: same (12pp gap to close)</div></div>
+    <div class="mt"><div class="mn">44%</div><div class="ml">Hourly work potentially replaceable by AI</div></div>
+  </div>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;line-height:1.6">Most important skills going forward: curiosity, comfort with not having answers, willingness to adapt. The 'agency quotient' matters more than technical skills. T-shaped skills with depth in one area. "There is not going to be anyone who is just a manager — need to get over egos, no work is beneath you."</p>
+  <div class="qb"><p>"By 2030, about $2.9 trillion of economic value could be unlocked in the United States — if organizations prepare their people and redesign workflows, rather than individual tasks, around people, agents, and robots working together."</p><span>— McKinsey, cited by Korst</span></div>
+  <div class="qb"><p>"We tend to overestimate the effect of a technology in the short run and underestimate the effect in the long run."</p><span>— Amara's Law, 1978</span></div>
+  <div class="div"></div>
+  <h2>Company AI identity map</h2>
+  <div class="fw"><h3>Open connector · Walled garden · No-regrets</h3><p style="margin-top:6px">Walmart = Open Connector (partnership-heavy, open standards, meet users on any AI assistant). Amazon = Walled Garden (proprietary-first, keep customers in ecosystem). Microsoft = No-Regrets Enterprise Choice (multi-model, governance-first, be the safe bet for enterprise).</p></div>
+</div>
+
+<!-- THEMES -->
+<div id="s-themes" class="sec">
+  <h2>Cross-cutting themes</h2>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:18px;line-height:1.6">Seven patterns that emerged consistently across all sessions, site visits, and speakers. These were not taught — they were observed.</p>
+  <div class="ti"><div class="tn">1</div><div class="tb2"><h3>AI is a strategy accelerator, not a strategy itself</h3><p>Define the business problem first; then ask how AI helps. Starting with AI leads to solutions in search of problems. Jeremy Korst, T-Mobile, Amazon, and Netessine all named this independently. PwC 2026: 56% of CEOs report zero financial return from AI in the last 12 months.</p></div></div>
+  <div class="ti"><div class="tn">2</div><div class="tb2"><h3>The core commoditizes — value lives in the crust</h3><p>Foundation models will commoditize. Defensibility comes from proprietary data, redesigned workflows, and culture. Madrona: value is currently accruing to the model layer — but this will shift. Companies competing on models alone will lose.</p></div></div>
+  <div class="ti"><div class="tn">3</div><div class="tb2"><h3>Workflow redesign is the real unlock — not task automation</h3><p>Layering AI onto existing processes captures a fraction of the value. T-Mobile (IVR → AI-native) and Amazon both learned this the hard way. "If a human is needed to hand things from A to B, that's a process defect."</p></div></div>
+  <div class="ti"><div class="tn">4</div><div class="tb2"><h3>Culture eats AI strategy for breakfast</h3><p>The limiting factor at every company was people's willingness to change — not the technology. Amazon, T-Mobile, Microsoft, and Gates Foundation all named this their biggest challenge. Algorithmic aversion is real. Amazon's golden toilet award: reward experimentation, not outcomes — because outcomes are rare.</p></div></div>
+  <div class="ti"><div class="tn">5</div><div class="tb2"><h3>"How can I get to yes?" — customer obsession as north star</h3><p>Both T-Mobile and Amazon independently used this exact phrase. Every AI investment filtered through: does this make the customer's life better? "AI is great at disregarding org boundaries — reconsider role definitions."</p></div></div>
+  <div class="ti"><div class="tn">6</div><div class="tb2"><h3>Adaptable people define who wins</h3><p>AI amplifies skill differences — strong performers get dramatically stronger, rigid performers fall further behind. The most valuable capability going forward is the 'agency quotient.' Everyone is going to have to be a manager of AI agents and humans. Getting there requires classic management skills: delegation, decomposing problems, inspecting results, feedback loops.</p></div></div>
+  <div class="ti"><div class="tn">7</div><div class="tb2"><h3>First movers win because they learn faster</h3><p>Early movers collect data sooner, learn quicker, and improve faster. Internal data is a compounding moat. The wait-and-see path feels safer but compounds disadvantage. Netessine: doubling experiments per year doubles inventiveness. Amazon typically runs experiments for 5–7 years.</p></div></div>
+</div>
+
+<!-- MONDAY MORNING -->
+<div id="s-actions" class="sec">
+  <h2>Monday morning actions</h2>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:4px;line-height:1.6">Organized by Strategy · Operations · People, drawn from the course 2-pager. Tap any item to check it off.</p>
+  <div class="acat">Strategy</div>
+  <div class="ai" onclick="tc(this)"><div class="ach"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="aib"><h3>Map your AI opportunity to the spectrum</h3><p>Copilots, Agents, or AI Services? Each requires different pricing, org design, and metrics. Assess what % of your business model operates in WINS.</p></div><div class="aar">›</div></div>
+  <div class="ai" onclick="tc(this)"><div class="ach"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="aib"><h3>Audit your business model canvas for AI wedges</h3><p>Map the current BMC. Mark each block: where are information or alignment inefficiencies? Where does AI improve prediction, reduce error, or remove friction?</p></div><div class="aar">›</div></div>
+  <div class="ai" onclick="tc(this)"><div class="ach"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="aib"><h3>Name your 'dumb pipe' risk</h3><p>In your industry, who is positioned to capture the intelligence layer above your commodity offering? Madrona's lens: value is moving to whoever controls the model + data layer.</p></div><div class="aar">›</div></div>
+  <div class="acat">Operations</div>
+  <div class="ai" onclick="tc(this)"><div class="ach"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="aib"><h3>Apply the 4A framework to each AI use case</h3><p>For every current or planned AI deployment, explicitly assign Assist / Approve / Audit / Automate based on risk and reversibility. Define trust controls: who signs the policy? When must AI route to a human?</p></div><div class="aar">›</div></div>
+  <div class="ai" onclick="tc(this)"><div class="ach"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="aib"><h3>Launch one bounded pilot using the 5-step engine</h3><p>Pick one decision. Redesign the workflow (not just the task). Set governance. Define 1 KPI + 2–3 guardrails. Run controlled before scaling.</p></div><div class="aar">›</div></div>
+  <div class="ai" onclick="tc(this)"><div class="ach"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="aib"><h3>Replace soft ROI with business outcomes</h3><p>"Hours saved only matters when applied to the bottleneck." Identify the one business metric your AI deployment directly moves. Measure that. Meetings and success stories are not KPIs.</p></div><div class="aar">›</div></div>
+  <div class="acat">People</div>
+  <div class="ai" onclick="tc(this)"><div class="ach"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="aib"><h3>Measure team productivity, not individual</h3><p>Teams are systems: people + tools + AI setup. Same rigor, different author. Metric: shipment deployments per week, not lines of code.</p></div><div class="aar">›</div></div>
+  <div class="ai" onclick="tc(this)"><div class="ach"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="aib"><h3>Close the VP–middle manager perception gap</h3><p>Korst data: VPs are 2× more likely to say their org is adopting AI quickly vs. middle managers (56% vs. 28%). Find where the disconnect is — it's often change management, not technical understanding.</p></div><div class="aar">›</div></div>
+  <div class="ai" onclick="tc(this)"><div class="ach"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="aib"><h3>Onboard AI as a new teammate, not a tool</h3><p>Amazon's SLT framing: think of AI as a new teammate — org context, team missions, tools to access. Treat AI fluency as a skillset for the whole team, not a specialty for a few.</p></div><div class="aar">›</div></div>
+  <div class="ai" onclick="tc(this)"><div class="ach"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="aib"><h3>Build a culture that rewards experimentation</h3><p>Amazon's golden toilet award: reward the team that runs the most experiments, not the ones that succeed. Create the portfolio: early, mid, and late-stage experiments running simultaneously.</p></div><div class="aar">›</div></div>
+  <div class="div"></div>
+  <div class="qb"><p>"We want our leaders to be coaches and facilitators, not decision-makers. The experiments that the team runs should provide the data to help the team make decisions."</p><span>— Session 4, alternative to the HiPPO</span></div>
+  <div class="qb"><p>"Success requires top-down vision plus bottoms-up embrace. Alignment, culture, and communication are the real levers."</p><span>— Jeremy Korst, Mindspan Labs</span></div>
+  <div class="qb"><p>"Constraint breeds innovation."</p><span>— Josh, Blue Origin · Day 5</span></div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('v'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('v');
+  const map = {overview:0, frameworks:1, visits:2, speakers:3, themes:4, actions:5};
+  if (map[id] !== undefined) document.querySelectorAll('.nb')[map[id]].classList.add('active');
+}
+function x(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('o');
+  const btn = el.previousElementSibling;
+  if (btn && btn.classList.contains('xbtn'))
+    btn.textContent = el.classList.contains('o') ? btn.textContent.replace('▾','▴') : btn.textContent.replace('▴','▾');
+}
+function tc(item) { item.querySelector('.ach').classList.toggle('done'); }
+</script>
+</body>
+</html>
